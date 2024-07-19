@@ -33,7 +33,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td><b>{{ $item->title }}</b></td>
                                 <td>
-                                    <img src="{{ $item->image }}" width="100" class="img-thumbnail">
+                                    <img src="{{ Storage::url($item->image) }}" width="100" class="img-thumbnail">
                                 </td>
                                 <td>{{ $item->slug }}</td>
                                 <td>{{ Str::limit($item->excerpt, 50) }}</td>
@@ -42,15 +42,15 @@
                                 <td>{{ $item->category->name ?? 'Uncategorized' }}</td>
                                 <td>{{ $item->views }}</td>
                                 <td>
-                                <span class="badge {{ $item->is_active ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $item->is_active ? 'Active' : 'Inactive' }}
-                                </span>
+                                    <span class="badge {{ $item->is_active ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $item->is_active ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('admin.posts.edit', $item) }}" class="btn btn-primary btn-sm">Sửa</a>
                                         <a href="{{ route('admin.posts.show', $item) }}" class="btn btn-info btn-sm">Xem</a>
-                                        <form action="{{ route('admin.categories.destroy', $item) }}" method="post">
+                                        <form action="{{ route('admin.posts.destroy', $item) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button onclick="return confirm('Are you sure??')" type="submit"

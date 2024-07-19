@@ -22,13 +22,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('home');
-});
 
-Route::get('/home',     [HomeController::class, 'index'])->name('home');
+Route::get('/',                    [HomeController::class, 'index']);
+Route::get('/home',                [HomeController::class, 'index'])->name('home');
 Route::get('/category/{id}/posts', [HomeController::class, 'postsByCategory'])->name('category.posts');
-Route::get('/post-detail/{id}', [HomeController::class, 'postDetail'])->name('post-detail');
+Route::get('/post-detail/{id}',    [HomeController::class, 'postDetail'])->name('post-detail');
+Route::post('/search',             [HomeController::class, 'search'])->name('search');
 
 
 Route::get('profile', [HomeController::class, 'profile'])->name('profile');

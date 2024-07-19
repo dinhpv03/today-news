@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -19,6 +21,8 @@ class PostController extends Controller
     {
 
         $posts = Post::query()->with(['category', 'user'])->latest('id')->get();
+
+//        dd($posts);
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('posts'));
     }
@@ -37,7 +41,20 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->except('image');
+        $data['is_active'] ??= 0;
+        $data['author_id'] = Auth::id();
+
+//        dd($data);
+
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store(self::PATH_UPLOAD, 'public');
+        }
+
+        Post::query()->create($data);
+
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -55,7 +72,11 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::query()->with(['category'])->findOrFail($id);
+
+        $categories = Category::all();
+
+        return view(self::PATH_VIEW . __FUNCTION__, compact('post','categories'));
     }
 
     /**
@@ -63,7 +84,27 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::query()->with(['category'])->findOrFail($id);
+
+        $data = $request->except('image');
+
+        $data['is_active'] ??= 0;
+
+        $data['author_id'] = Auth::id();
+
+        if ($request->hasFile('image')) {
+            if ($post->image) {
+                Storage::delete($post->image);
+            }
+            $data['image'] = $request->file('image')->store(self::PATH_UPLOAD, 'public');
+        }
+
+//        dd($data);
+        $post->update($data);
+
+
+        return redirect()->route('admin.posts.index')
+            ->with('success', 'Bài viết đã được cập nhật thành công.');
     }
 
     /**
@@ -71,6 +112,10 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Post::query()->findOrFail($id);
+
+        $data->delete();
+
+        return redirect()->route('admin.posts.index');
     }
 }

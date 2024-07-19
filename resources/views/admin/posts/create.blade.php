@@ -77,7 +77,7 @@
 
                                             <div class="form-group">
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" {{ old('is_active') ? 'checked' : '' }}>
+                                                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" {{ old('is_active') ? 'checked' : '' }} checked value="1">
                                                     <label class="custom-control-label" for="is_active">Xuất bản ngay</label>
                                                 </div>
                                             </div>

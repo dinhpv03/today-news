@@ -6,7 +6,6 @@
 
     @include('layouts.partials.featured-news')
 
-
     <div class="container-fluid mt-3">
         <div class="container">
             <div class="row">

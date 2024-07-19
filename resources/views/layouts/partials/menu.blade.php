@@ -9,19 +9,18 @@
         <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
             <div class="navbar-nav mr-auto py-0">
                 <a href="{{ route('home') }}" class="nav-item nav-link active">trang chủ</a>
-
-
                 @foreach($dataMenu as $item)
                     <a href="{{ route('category.posts', $item->id) }}" class="nav-item nav-link">{{ $item->name }}</a>
                 @endforeach
-
             </div>
             <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
-                <input type="text" class="form-control border-0" placeholder="Tìm kiếm">
-                <div class="input-group-append">
-                    <button class="input-group-text bg-primary text-dark border-0 px-3"><i
-                            class="fa fa-search"></i></button>
-                </div>
+                <form action="{{ route('search') }}" method="post" class="input-group">
+                    @csrf
+                    <input type="text" class="form-control border-0" name="search" placeholder="Tìm kiếm">
+                    <div class="input-group-append">
+                        <button class="input-group-text bg-primary text-dark border-0 px-3"><i class="fa fa-search"></i></button>
+                    </div>
+                </form>
             </div>
         </div>
     </nav>

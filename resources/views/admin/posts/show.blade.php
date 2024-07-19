@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="card">
-                                    <img src="{{ $post->image }}" class="card-img-top" alt="{{ $post->title }}">
+                                    <img src="{{ Storage::url($post->image) }}" class="card-img-top" alt="{{ $post->title }}">
                                     <div class="card-body">
                                         <h5 class="card-title">Ảnh đại diện</h5>
                                     </div>

@@ -29,9 +29,15 @@ class HomeController extends Controller
 
     public function index()
     {
-//        $data = Category::all();
+        $slide_show_posts = Post::query()
+            ->with('category')
+            ->latest('id')
+            ->take(3)
+            ->get();
 
-        return view('home');
+//        dd($slide_show_posts);
+
+        return view('home',compact('slide_show_posts'));
     }
 
     public function postsByCategory($id)
@@ -48,6 +54,26 @@ class HomeController extends Controller
 
         return view('post-detail', compact('post'));
     }
+
+
+    public function search(Request $request)
+    {
+        $searchQuery = $request->input('search');
+
+        $results = Post::query()->where(function($query) use ($searchQuery) {
+            $query->where('title', 'LIKE', "%{$searchQuery}%")
+                ->orWhere('content', 'LIKE', "%{$searchQuery}%");
+        })
+            ->orWhereHas('category', function($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', "%{$searchQuery}%");
+            })
+            ->with('category')
+            ->paginate(10);
+
+        return view('search_results', compact('results', 'searchQuery'));
+    }
+
+
 
     public function profile() {
 

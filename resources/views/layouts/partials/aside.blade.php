@@ -1,7 +1,7 @@
 
 
 <!-- Ads Start -->
-<div class="mb-3 mt-3">
+<div class="mb-3">
     <div class="section-title mb-0">
         <h4 class="m-0 text-uppercase font-weight-bold">Quảng cáo</h4>
     </div>

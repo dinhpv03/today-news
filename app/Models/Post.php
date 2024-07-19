@@ -20,6 +20,11 @@ class Post extends Model
         'image',
         'published_at',
         'views',
+        'is_active'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean'
     ];
 
     public function category() {
