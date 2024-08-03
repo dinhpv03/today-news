@@ -4,13 +4,13 @@
             <nav class="navbar navbar-expand-sm bg-dark p-0">
                 <ul class="navbar-nav ml-n2">
                     <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="#">Monday, January 1, 2045</a>
+                        <a class="nav-link text-body small" href="#">{{ $currentDate }}</a>
                     </li>
                     <li class="nav-item border-right border-secondary">
                         <a class="nav-link text-body small" href="#">Quảng cáo</a>
                     </li>
                     <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="#">Liên hệ</a>
+                        <a class="nav-link text-body small" href="{{ route('contact') }}">Liên hệ</a>
                     </li>
                     @guest
                         @if (Route::has('login'))
@@ -73,11 +73,29 @@
             </nav>
         </div>
     </div>
-    <div class="row align-items-center bg-white py-3 px-lg-5">
-        <div class="col-lg-4">
-            <a href="{{ route('home') }}" class="navbar-brand p-0 d-none d-lg-block">
-                <h5 class="m-0 display-5 text-uppercase text-primary">Today<span class="text-secondary font-weight-normal">News</span></h5>
-            </a>
+    <div class="container-fluid bg-white py-3">
+        <div class="row align-items-center justify-content-between px-lg-5">
+            <div class="col-lg-4 d-none d-lg-block">
+                <a href="{{ route('home') }}" class="navbar-brand p-0">
+                    <h5 class="m-0 display-4 text-uppercase">
+                        <span class="text-primary font-weight-bold">Today</span>
+                        <span class="text-secondary">News</span>
+                    </h5>
+                </a>
+            </div>
+            <div class="col-lg-4 text-center py-2">
+                <form action="{{ route('search') }}" method="post" class="search-form">
+                    @csrf
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Tìm kiếm..." aria-label="Tìm kiếm">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

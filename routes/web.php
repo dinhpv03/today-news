@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -20,14 +22,21 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
+Route::get('/',                     [HomeController::class, 'index']);
+Route::get('/home',                 [HomeController::class, 'index'])
+    ->middleware('verified')
+    ->name('home');
+Route::get('/category/{id}/posts',  [HomeController::class, 'postsByCategory'])->name('category.posts');
+Route::post('/search',              [HomeController::class, 'search'])->name('search');
+Route::get('/contact',              [HomeController::class, 'contact'])->name('contact');
 
-Route::get('/',                    [HomeController::class, 'index']);
-Route::get('/home',                [HomeController::class, 'index'])->name('home');
-Route::get('/category/{id}/posts', [HomeController::class, 'postsByCategory'])->name('category.posts');
-Route::get('/post-detail/{id}',    [HomeController::class, 'postDetail'])->name('post-detail');
-Route::post('/search',             [HomeController::class, 'search'])->name('search');
+Route::get('/post/{slug}',          [PostController::class, 'postDetail'])->name('post-detail');
+Route::get('/posts',          [PostController::class, 'allPosts'])->name('all-posts');
+
+Route::get('categories',            [CategoryController::class, 'index'])->name('categories');
+
 
 
 Route::get('profile', [HomeController::class, 'profile'])->name('profile');

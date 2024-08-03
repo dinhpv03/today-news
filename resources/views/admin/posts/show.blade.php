@@ -21,6 +21,12 @@
                                     <i class="fas fa-eye"></i> {{ $post->views }} lượt xem
                                 </p>
                                 <div class="mb-4">
+                                    <strong>Slug:</strong>
+                                    <div class="mt-2 content">
+                                        {!! $post->slug !!}
+                                    </div>
+                                </div>
+                                <div class="mb-4">
                                     <strong>Tóm tắt:</strong>
                                     <p>{{ $post->excerpt }}</p>
                                 </div>
@@ -39,10 +45,6 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 ID
                                                 <span class="badge bg-primary rounded-pill">{{ $post->id }}</span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                Slug
-                                                <span class="text-muted">{{ $post->slug }}</span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Danh mục

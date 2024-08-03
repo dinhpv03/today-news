@@ -18,10 +18,14 @@
                                                href="">{{ $category->name }}</a>
                                             <b><small>{{ \Carbon\Carbon::parse($post->published_at)->format('d/m/Y') }}</small></b>
                                         </div>
-                                        <a class="h5 d-block mb-3 text-secondary text-uppercase font-weight-bold"
-                                           href="{{ route('post-detail', $post->id) }}">
-                                            {{ Str::limit($post->title, 50) }}
-                                        </a>
+                                        @if($post->slug)
+                                            <a  class="h5 d-block mb-3 text-secondary text-uppercase font-weight-bold"
+                                                href="{{ route('post-detail', $post->slug) }}">
+                                                {{ Str::limit($post->title, 50) }}
+                                            </a>
+                                        @else
+                                            <span class="h4 m-0 text-white text-uppercase font-weight-bold">{{ Str::limit($post->title, 50) }}</span>
+                                        @endif
                                         <img class="img-fluid w-100" src="{{ Storage::url($post->image) }}"
                                              style="object-fit: cover; height: 200px;">
                                         <p class="m-0">
@@ -34,7 +38,8 @@
                                             <small>{{ $post->user->name }}</small>
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <small class="ml-3"><i class="far fa-eye mr-2"></i>{{ $post->views }}</small>
+                                            <small class="ml-3"><i class="far fa-eye mr-2"></i>{{ $post->views }}
+                                            </small>
                                             <small class="ml-3"><i class="far fa-comment mr-2"></i>123</small>
                                         </div>
                                     </div>

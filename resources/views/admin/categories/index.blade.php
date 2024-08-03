@@ -3,6 +3,11 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
+            @if (session('success'))
+                <div class="alert alert-success mt-3">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -42,6 +47,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {{ $data->links() }}
                     </div>
                 </div>
             </div>

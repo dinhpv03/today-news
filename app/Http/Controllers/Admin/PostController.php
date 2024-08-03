@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -19,10 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-
-        $posts = Post::query()->with(['category', 'user'])->latest('id')->get();
-
-//        dd($posts);
+        $posts = Post::query()->with(['category', 'user'])->latest('id')->paginate(8);
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('posts'));
     }
@@ -39,14 +39,13 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $data = $request->except('image');
+        $data['slug'] = Str::slug($data['title']);
+
         $data['is_active'] ??= 0;
         $data['author_id'] = Auth::id();
-
-//        dd($data);
-
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store(self::PATH_UPLOAD, 'public');
@@ -54,7 +53,8 @@ class PostController extends Controller
 
         Post::query()->create($data);
 
-        return redirect()->route('admin.posts.index');
+        return redirect()->route('admin.posts.index')
+            ->with('success', 'Thêm bài viết thành công');
     }
 
     /**
@@ -82,12 +82,12 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, string $id)
     {
         $post = Post::query()->with(['category'])->findOrFail($id);
 
         $data = $request->except('image');
-
+        $data['slug'] = Str::slug($data['title']);
         $data['is_active'] ??= 0;
 
         $data['author_id'] = Auth::id();
@@ -99,12 +99,10 @@ class PostController extends Controller
             $data['image'] = $request->file('image')->store(self::PATH_UPLOAD, 'public');
         }
 
-//        dd($data);
         $post->update($data);
 
-
         return redirect()->route('admin.posts.index')
-            ->with('success', 'Bài viết đã được cập nhật thành công.');
+            ->with('success', 'Bài viết được cập nhật thành công!');
     }
 
     /**
@@ -116,6 +114,7 @@ class PostController extends Controller
 
         $data->delete();
 
-        return redirect()->route('admin.posts.index');
+        return redirect()->route('admin.posts.index')
+            ->with('success', 'Xóa bài viết thành công');
     }
 }

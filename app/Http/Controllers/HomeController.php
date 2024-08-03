@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -21,44 +22,47 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-//    public function __construct()
-//    {
-//        $this->middleware('auth')->only(['profile', 'comment']);
-//    }
 
 
     public function index()
     {
         $slide_show_posts = Post::query()
             ->with('category')
+            ->select('id', 'title','image', 'slug', 'category_id')
             ->latest('id')
             ->take(3)
             ->get();
 
-//        dd($slide_show_posts);
+        $topPosts = Post::query()
+            ->with('category')
+            ->orderBy('views', 'desc')
+            ->take(7)
+            ->get();
 
-        return view('home',compact('slide_show_posts'));
+        $new_posts = Post::query()
+            ->first('id')
+            ->paginate(8);
+
+        $world_news = Post::query()
+            ->where('category_id',9)
+            ->get();
+
+        return view('home', compact('topPosts','slide_show_posts','new_posts','world_news'));
     }
+
 
     public function postsByCategory($id)
     {
         $category = Category::query()->with('posts')->findOrFail($id);
 
         return view('posts-by-category', compact('category'));
-
     }
-
-    public function postDetail($id) {
-
-        $post = Post::query()->findOrFail($id);
-
-        return view('post-detail', compact('post'));
-    }
-
 
     public function search(Request $request)
     {
-        $searchQuery = $request->input('search');
+        $searchQuery = request()->validate([
+            'search' => 'required',
+        ])['search'];
 
         $results = Post::query()->where(function($query) use ($searchQuery) {
             $query->where('title', 'LIKE', "%{$searchQuery}%")
@@ -73,7 +77,10 @@ class HomeController extends Controller
         return view('search_results', compact('results', 'searchQuery'));
     }
 
+    public function contact() {
 
+        return view('contact');
+    }
 
     public function profile() {
 

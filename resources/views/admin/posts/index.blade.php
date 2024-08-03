@@ -3,6 +3,11 @@
 @section('content')
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">Danh sách bài viết</h1>
+        @if (session('success'))
+            <div class="alert alert-success mt-3">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -17,7 +22,6 @@
                             <th>ID</th>
                             <th>Tiêu đề</th>
                             <th>Image</th>
-                            <th>Slug</th>
                             <th>Tóm tắt</th>
                             <th>Ngày đăng</th>
                             <th>Tác giả</th>
@@ -35,8 +39,7 @@
                                 <td>
                                     <img src="{{ Storage::url($item->image) }}" width="100" class="img-thumbnail">
                                 </td>
-                                <td>{{ $item->slug }}</td>
-                                <td>{{ Str::limit($item->excerpt, 50) }}</td>
+                                <td>{{ Str::limit($item->excerpt, 255) }}</td>
                                 <td>{{ $item->published_at}}</td>
                                 <td>{{ $item->user->name ?? 'N/A' }}</td>
                                 <td>{{ $item->category->name ?? 'Uncategorized' }}</td>
@@ -63,6 +66,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {{ $posts->links() }}
                 </div>
             </div>
         </div>

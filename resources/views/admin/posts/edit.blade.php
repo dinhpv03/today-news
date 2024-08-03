@@ -19,16 +19,8 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label for="title">Tiêu đề <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}" required>
+                                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $post->title) }}" >
                                         @error('title')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="slug">Slug</label>
-                                        <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" value="{{ old('slug', $post->slug) }}">
-                                        @error('slug')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -43,7 +35,7 @@
 
                                     <div class="form-group">
                                         <label for="content">Nội dung <span class="text-danger">*</span></label>
-                                        <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="10" required>{{ old('content', $post->content) }}</textarea>
+                                        <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="10" >{{ old('content', $post->content) }}</textarea>
                                         @error('content')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

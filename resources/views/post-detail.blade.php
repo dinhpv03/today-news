@@ -8,13 +8,14 @@
                     <div class="position-relative mb-3">
                         <div class="bg-white border border-top-0 p-4">
                             <div class="mb-3">
-                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                   href="">{{ $post->category->name }}</a>
+                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ $post->category->name }}</a>
                                 <a class="text-body" href="">{{ \Carbon\Carbon::parse($post->published_at)->format('d/m/Y') }}</a>
                             </div>
                             <h3 class="mb-3 text-secondary text-uppercase font-weight-bold">{{ $post->title }}</h3>
-                            <p>{{ $post->content }}</p>
                             <img class="img-fluid w-100" src="{{ Storage::url($post->image) }}" style="object-fit: cover;">
+                            <div class="post-content mt-3">
+                                {!! nl2br(e($post->content)) !!}
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
                             <div class="d-flex align-items-center">

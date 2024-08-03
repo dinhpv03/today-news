@@ -9,16 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
 
     const PATH_VIEW = 'admin.categories.';
     const PATH_UPLOAD = 'categories';
 
     public function index()
     {
-        $data = Category::all();
+        $data = Category::query()->first('id')->paginate('5');
 
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
